@@ -39,7 +39,6 @@ public class Option extends AppCompatActivity {
     public void choicesButtonClicked(View view){
         RadioButton number = (RadioButton) view;
         String buttonText = (String) number.getText();
-        System.out.println(buttonText);
         preferences.edit().putInt("number",Integer.parseInt(buttonText)).apply();
     }
 

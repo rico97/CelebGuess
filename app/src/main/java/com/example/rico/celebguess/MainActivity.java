@@ -79,25 +79,6 @@ public class MainActivity extends AppCompatActivity {
         nameList.add("Kevin");
         nameList.add("Roy");
 
-        RadioButton but1 = (RadioButton) findViewById(R.id.radioButton1);
-        RadioButton but2 = (RadioButton) findViewById(R.id.radioButton2);
-        RadioButton but3 = (RadioButton) findViewById(R.id.radioButton3);
-        RadioButton but4 = (RadioButton) findViewById(R.id.radioButton4);
-        int checking = preferences.getInt("number",4);
-        switch (checking){
-            case 2:
-                but1.setChecked(true);
-                break;
-            case 4:
-                but2.setChecked(true);
-                break;
-            case 6:
-                but3.setChecked(true);
-                break;
-            case 8:
-                but4.setChecked(true);
-                break;
-        }
 
         photoPicker();
 
@@ -127,6 +108,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        int orientation = getResources().getConfiguration().orientation;
+        if(orientation== Configuration.ORIENTATION_LANDSCAPE) {
+            RadioButton but1 = (RadioButton) findViewById(R.id.radioButton1);
+            RadioButton but2 = (RadioButton) findViewById(R.id.radioButton2);
+            RadioButton but3 = (RadioButton) findViewById(R.id.radioButton3);
+            RadioButton but4 = (RadioButton) findViewById(R.id.radioButton4);
+            int checking = preferences.getInt("number",4);
+            switch (checking){
+                case 2:
+                    but1.setChecked(true);
+                    break;
+                case 4:
+                    but2.setChecked(true);
+                    break;
+                case 6:
+                    but3.setChecked(true);
+                    break;
+                case 8:
+                    but4.setChecked(true);
+                    break;
+            }
+        }
         gameSetter();
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
