@@ -42,45 +42,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        preferences = getSharedPreferences("choices",MODE_PRIVATE);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        names = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
-        img = (ImageView) findViewById(R.id.imageToShow);
-        gridView = (GridView) findViewById(R.id.gridView);
-        gridView.setAdapter(names);
-        nameList = new ArrayList<>();
-        photos = new ArrayList<>();
-        nameForChoose = new ArrayList<>();
-
-        nameMap = new HashMap<String, Integer>();
-        nameMap.put("Arnold Schwarzenegger", R.drawable.arnold);
-        nameMap.put("Emma Stone",R.drawable.stone);
-        nameMap.put("Jessica Alba", R.drawable.alba);
-        nameMap.put("Robert Downy Jr.", R.drawable.robert);
-        nameMap.put("Kristen Stewart", R.drawable.kristen);
 
 
-        for ( Map.Entry<String, Integer> entry : nameMap.entrySet() ) {
-            String name = entry.getKey();
-            nameList.add(name);
-            int value = entry.getValue();
-            photos.add(value);
-        }
-
-        nameList.add("Bobie");
-        nameList.add("Daniel");
-        nameList.add("Dylan");
-        nameList.add("Jack");
-        nameList.add("Jill");
-        nameList.add("Sino");
-        nameList.add("Emily");
-        nameList.add("Paul");
-        nameList.add("Kevin");
-        nameList.add("Roy");
-
-
-        photoPicker();
 
         /*int randomiser = (int) (Math.random() * photos.size());
         img.setImageResource(photos.get(randomiser));
@@ -108,66 +73,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        int orientation = getResources().getConfiguration().orientation;
-        if(orientation== Configuration.ORIENTATION_LANDSCAPE) {
-            RadioButton but1 = (RadioButton) findViewById(R.id.radioButton1);
-            RadioButton but2 = (RadioButton) findViewById(R.id.radioButton2);
-            RadioButton but3 = (RadioButton) findViewById(R.id.radioButton3);
-            RadioButton but4 = (RadioButton) findViewById(R.id.radioButton4);
-            int checking = preferences.getInt("number",4);
-            switch (checking){
-                case 2:
-                    but1.setChecked(true);
-                    break;
-                case 4:
-                    but2.setChecked(true);
-                    break;
-                case 6:
-                    but3.setChecked(true);
-                    break;
-                case 8:
-                    but4.setChecked(true);
-                    break;
-            }
-        }
-        gameSetter();
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(nameMap.containsKey(parent.getItemAtPosition(position).toString())){
-                    if(img.getDrawable().getConstantState() == getResources().getDrawable(nameMap.get(parent.getItemAtPosition(position).toString())).getConstantState()){
-                        if(currentToast != null)
-                        {
-                            currentToast.cancel();
-                        }
-                        currentToast = Toast.makeText(MainActivity.this, "Correct", Toast.LENGTH_SHORT);
-                        currentToast.show();
-                    }
-                    else{
-                        if(currentToast != null)
-                        {
-                            currentToast.cancel();
-                        }
-                        currentToast = Toast.makeText(MainActivity.this, "Wrong" , Toast.LENGTH_SHORT);
-                        currentToast.show();
-                    }
-                    photoPicker();
-                    gameSetter();
-                } else{
-                    if(currentToast != null)
-                    {
-                        currentToast.cancel();
-                    }
-                    currentToast = Toast.makeText(MainActivity.this, "Wrong" , Toast.LENGTH_SHORT);
-                    currentToast.show();
-                    photoPicker();
-                    gameSetter();
-                }
-
-
-            }
-        });
     }
 
     @Override
@@ -197,40 +103,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void gameSetter() {
-        numberOfChoice = preferences.getInt("number",4 );
-        names.clear();
-        nameForChoose.add(nameList.get(currentPicNumber));
-        while(nameForChoose.size()<numberOfChoice){
-            int randomNameGenerator = (int) (Math.random()*nameList.size());
-            String nameToPut = nameList.get(randomNameGenerator);
-            if(nameForChoose.contains(nameToPut)){
-                System.out.println("Name is already inside");
-            }
-            else {
-                nameForChoose.add(nameToPut);
-            }
-        }
 
-        for(int i = 0; i < numberOfChoice; i++){
-            int randomNamePutter = (int) (Math.random()*nameForChoose.size());
-            names.add(nameForChoose.get(randomNamePutter));
-            nameForChoose.remove(randomNamePutter);
-        }
-    }
 
-    public void choicesButtonClicked(View view){
-        RadioButton number = (RadioButton) view;
-        String buttonText = (String) number.getText();
-        System.out.println(buttonText);
-        preferences.edit().putInt("number",Integer.parseInt(buttonText)).apply();
-        gameSetter();
-    }
-
-    public void photoPicker(){
-        int randomiser = (int) (Math.random() * photos.size());
-        img.setImageResource(photos.get(randomiser));
-        currentPicNumber = randomiser;
-    }
 
 }
